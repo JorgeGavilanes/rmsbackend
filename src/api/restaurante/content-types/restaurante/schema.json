@@ -1,0 +1,79 @@
+{
+  "kind": "collectionType",
+  "collectionName": "restaurantes",
+  "info": {
+    "singularName": "restaurante",
+    "pluralName": "restaurantes",
+    "displayName": "Restaurante",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true
+    },
+    "nombre_comercial": {
+      "type": "string",
+      "required": true
+    },
+    "ruc": {
+      "type": "string",
+      "required": true,
+      "maxLength": 13,
+      "minLength": 10
+    },
+    "direccion": {
+      "type": "text",
+      "required": true
+    },
+    "celular": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 14
+    },
+    "creditos": {
+      "type": "integer",
+      "default": 50
+    },
+    "color1": {
+      "type": "string",
+      "default": "#008ADD",
+      "maxLength": 7,
+      "minLength": 7,
+      "required": true
+    },
+    "color2": {
+      "type": "string",
+      "default": "#2598DD",
+      "maxLength": 7,
+      "minLength": 7,
+      "required": true
+    },
+    "fondo": {
+      "type": "string",
+      "maxLength": 7,
+      "required": true,
+      "minLength": 7,
+      "default": "#E4EFFF"
+    },
+    "url_img": {
+      "type": "text"
+    },
+    "users_permissions_users": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "restaurante"
+    },
+    "categorias": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::categoria.categoria",
+      "mappedBy": "restaurante"
+    }
+  }
+}

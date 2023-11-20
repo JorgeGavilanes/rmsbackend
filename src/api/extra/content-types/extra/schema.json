@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "extras",
+  "info": {
+    "singularName": "extra",
+    "pluralName": "extras",
+    "displayName": "Extra"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true
+    },
+    "disponible": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "precio": {
+      "type": "decimal",
+      "required": true
+    },
+    "categoria": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::categoria.categoria",
+      "inversedBy": "extras"
+    }
+  }
+}
