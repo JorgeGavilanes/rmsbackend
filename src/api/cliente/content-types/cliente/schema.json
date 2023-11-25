@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "clientes",
+  "info": {
+    "singularName": "cliente",
+    "pluralName": "clientes",
+    "displayName": "Cliente",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true
+    },
+    "restaurante": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::restaurante.restaurante",
+      "inversedBy": "clientes"
+    },
+    "ruc": {
+      "type": "string",
+      "required": true,
+      "unique": false,
+      "maxLength": 13,
+      "minLength": 10
+    },
+    "celular": {
+      "type": "string",
+      "maxLength": 13,
+      "minLength": 7,
+      "required": true
+    },
+    "ciudad": {
+      "type": "string",
+      "required": true
+    },
+    "ubicacion": {
+      "type": "string",
+      "required": false
+    },
+    "referencia": {
+      "type": "string"
+    }
+  }
+}

@@ -24,16 +24,19 @@
       "type": "string",
       "required": true,
       "maxLength": 13,
-      "minLength": 10
+      "minLength": 10,
+      "unique": true
     },
     "direccion": {
-      "type": "text",
+      "type": "string",
       "required": true
     },
     "celular": {
       "type": "string",
       "minLength": 10,
-      "maxLength": 14
+      "maxLength": 14,
+      "unique": true,
+      "required": true
     },
     "creditos": {
       "type": "integer",
@@ -63,7 +66,7 @@
     "url_img": {
       "type": "text"
     },
-    "users_permissions_users": {
+    "users_permissions": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user",
@@ -74,6 +77,28 @@
       "relation": "oneToMany",
       "target": "api::categoria.categoria",
       "mappedBy": "restaurante"
+    },
+    "clientes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::cliente.cliente",
+      "mappedBy": "restaurante"
+    },
+    "reservas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::reserva.reserva",
+      "mappedBy": "restaurante"
+    },
+    "pedidos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::pedido.pedido",
+      "mappedBy": "restaurante"
+    },
+    "ciudad": {
+      "type": "string",
+      "required": true
     }
   }
 }

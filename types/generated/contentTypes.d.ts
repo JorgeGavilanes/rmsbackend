@@ -730,6 +730,56 @@ export interface ApiCategoriaCategoria extends Schema.CollectionType {
   };
 }
 
+export interface ApiClienteCliente extends Schema.CollectionType {
+  collectionName: 'clientes';
+  info: {
+    singularName: 'cliente';
+    pluralName: 'clientes';
+    displayName: 'Cliente';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    nombre: Attribute.String & Attribute.Required;
+    restaurante: Attribute.Relation<
+      'api::cliente.cliente',
+      'manyToOne',
+      'api::restaurante.restaurante'
+    >;
+    ruc: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        minLength: 10;
+        maxLength: 13;
+      }>;
+    celular: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        minLength: 7;
+        maxLength: 13;
+      }>;
+    ciudad: Attribute.String & Attribute.Required;
+    ubicacion: Attribute.String;
+    referencia: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::cliente.cliente',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::cliente.cliente',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiExtraExtra extends Schema.CollectionType {
   collectionName: 'extras';
   info: {
@@ -761,6 +811,91 @@ export interface ApiExtraExtra extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::extra.extra',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiItemItem extends Schema.CollectionType {
+  collectionName: 'items';
+  info: {
+    singularName: 'item';
+    pluralName: 'items';
+    displayName: 'Item';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    producto: Attribute.Relation<
+      'api::item.item',
+      'oneToOne',
+      'api::producto.producto'
+    >;
+    extra: Attribute.Relation<'api::item.item', 'oneToOne', 'api::extra.extra'>;
+    servido: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<false>;
+    pagado: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>;
+    comentario: Attribute.String;
+    paraLlevar: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<false>;
+    precioLlevar: Attribute.Decimal;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::item.item', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::item.item', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPedidoPedido extends Schema.CollectionType {
+  collectionName: 'pedidos';
+  info: {
+    singularName: 'pedido';
+    pluralName: 'pedidos';
+    displayName: 'Pedido';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    mesa: Attribute.String & Attribute.Required;
+    restaurante: Attribute.Relation<
+      'api::pedido.pedido',
+      'manyToOne',
+      'api::restaurante.restaurante'
+    >;
+    items: Attribute.Relation<
+      'api::pedido.pedido',
+      'oneToMany',
+      'api::item.item'
+    >;
+    isDelivery: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<false>;
+    cliente: Attribute.Relation<
+      'api::pedido.pedido',
+      'oneToOne',
+      'api::cliente.cliente'
+    >;
+    precioDelivery: Attribute.Decimal;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::pedido.pedido',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::pedido.pedido',
       'oneToOne',
       'admin::user'
     > &
@@ -811,6 +946,47 @@ export interface ApiProductoProducto extends Schema.CollectionType {
   };
 }
 
+export interface ApiReservaReserva extends Schema.CollectionType {
+  collectionName: 'reservas';
+  info: {
+    singularName: 'reserva';
+    pluralName: 'reservas';
+    displayName: 'Reserva';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    mesa: Attribute.String & Attribute.Required;
+    restaurante: Attribute.Relation<
+      'api::reserva.reserva',
+      'manyToOne',
+      'api::restaurante.restaurante'
+    >;
+    cliente: Attribute.Relation<
+      'api::reserva.reserva',
+      'oneToOne',
+      'api::cliente.cliente'
+    >;
+    fechaReserva: Attribute.DateTime & Attribute.Required;
+    abono: Attribute.Decimal & Attribute.DefaultTo<0>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::reserva.reserva',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::reserva.reserva',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiRestauranteRestaurante extends Schema.CollectionType {
   collectionName: 'restaurantes';
   info: {
@@ -827,12 +1003,15 @@ export interface ApiRestauranteRestaurante extends Schema.CollectionType {
     nombre_comercial: Attribute.String & Attribute.Required;
     ruc: Attribute.String &
       Attribute.Required &
+      Attribute.Unique &
       Attribute.SetMinMaxLength<{
         minLength: 10;
         maxLength: 13;
       }>;
-    direccion: Attribute.Text & Attribute.Required;
+    direccion: Attribute.String & Attribute.Required;
     celular: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
       Attribute.SetMinMaxLength<{
         minLength: 10;
         maxLength: 14;
@@ -860,7 +1039,7 @@ export interface ApiRestauranteRestaurante extends Schema.CollectionType {
       }> &
       Attribute.DefaultTo<'#E4EFFF'>;
     url_img: Attribute.Text;
-    users_permissions_users: Attribute.Relation<
+    users_permissions: Attribute.Relation<
       'api::restaurante.restaurante',
       'oneToMany',
       'plugin::users-permissions.user'
@@ -870,6 +1049,22 @@ export interface ApiRestauranteRestaurante extends Schema.CollectionType {
       'oneToMany',
       'api::categoria.categoria'
     >;
+    clientes: Attribute.Relation<
+      'api::restaurante.restaurante',
+      'oneToMany',
+      'api::cliente.cliente'
+    >;
+    reservas: Attribute.Relation<
+      'api::restaurante.restaurante',
+      'oneToMany',
+      'api::reserva.reserva'
+    >;
+    pedidos: Attribute.Relation<
+      'api::restaurante.restaurante',
+      'oneToMany',
+      'api::pedido.pedido'
+    >;
+    ciudad: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -904,8 +1099,12 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::categoria.categoria': ApiCategoriaCategoria;
+      'api::cliente.cliente': ApiClienteCliente;
       'api::extra.extra': ApiExtraExtra;
+      'api::item.item': ApiItemItem;
+      'api::pedido.pedido': ApiPedidoPedido;
       'api::producto.producto': ApiProductoProducto;
+      'api::reserva.reserva': ApiReservaReserva;
       'api::restaurante.restaurante': ApiRestauranteRestaurante;
     }
   }

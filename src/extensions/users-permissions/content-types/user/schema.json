@@ -70,7 +70,7 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::restaurante.restaurante",
-      "inversedBy": "users_permissions_users"
+      "inversedBy": "users_permissions"
     }
   }
 }

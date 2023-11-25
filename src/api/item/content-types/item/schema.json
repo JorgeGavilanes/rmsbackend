@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "items",
+  "info": {
+    "singularName": "item",
+    "pluralName": "items",
+    "displayName": "Item",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "producto": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::producto.producto"
+    },
+    "extra": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::extra.extra"
+    },
+    "servido": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "pagado": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "comentario": {
+      "type": "string",
+      "required": false
+    },
+    "paraLlevar": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "precioLlevar": {
+      "type": "decimal"
+    }
+  }
+}
